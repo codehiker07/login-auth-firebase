@@ -1,16 +1,20 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
   const [registerError, setRegisterError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [terms, setTerms] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email, password);
+    const termsAccepted = e.target.terms.checked;
+    console.log(email, password, termsAccepted);
 
     //reset error
     setRegisterError("");
@@ -55,13 +59,27 @@ const Register = () => {
             required
           />
           <br />
-          <input
-            className="mb-4 w-full p-2"
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
+          <div className="relative">
+            <input
+              className="mb-4 w-full p-2"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <span
+              className="absolute top-3 right-5"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}
+            </span>
+          </div>
+          <br />
+          <input onChange={setTerms} type="checkbox" name="terms" id="terms" />
+          <label className="pl-2" htmlFor="terms">
+            Accept our terms and conditions.
+          </label>
+          <br />
           <br />
           <input
             className="btn btn-outline"
